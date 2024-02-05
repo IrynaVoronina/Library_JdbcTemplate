@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+
+        h1 {
+            color: #333;
+        }
+
+
+        .formSearch {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            text-align: left;
+            margin-right: 2%;
+            margin-left: 2%;
+        }
+
+
+        .formClear {
+            background-color: #fff;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+            margin-right: 2%;
+            margin-left: 2%;
+        }
+
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+
+        select, input[type="text"] {
+            flex: 0.4;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+
+
+        button[type="submit"], .buttonClear {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+
+        button[type="submit"]:hover, .buttonClear:hover {
+            background-color: #0056b3;
+        }
+
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+
+        li {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            margin: 10px;
+            padding: 20px;
+            text-align: left;
+            width: 300px;
+            font-size: 16px;
+        }
+
+
+        .author-info {
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<h1>Authors</h1>
+<form class="getAllAuthor" action="/authors/getAllAuthors" method="get">
+    <button class="button" type="submit">Get  all Authors</button>
+</form>
+<ul>
+    <th:block th:each="author : ${@authorOperationService.getAllAuthors()}">
+        <li>
+            <span th:text="${author.firstName} + ' ' + ${author.middleName} + ' ' + ${author.lastName}"></span>
+            <div class="author-info">
+                <p th:text="'Birthplace: ' + ${author.birthplace}"></p>
+            </div>
+            <form action="/updateAuthorPage" method="post">
+                <input type="hidden" name="authorId" th:value="${author.id}">
+                <input type="hidden" name="firstName" th:value="${author.firstName}">
+                <input type="hidden" name="middleName" th:value="${author.middleName}">
+                <input type="hidden" name="lastName" th:value="${author.lastName}">
+                <input type="hidden" name="birthPlace" th:value="${author.birthplace}">
+                <button type="submit">Update</button>
+            </form>
+            <form action="/deleteAuthor" method="post">
+                <input type="hidden" name="authorId" th:value="${author.id}">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+    </th:block>
+
+
+</ul>
+</body>
+</html>

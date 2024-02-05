@@ -1,0 +1,330 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /books/{id}:
+    get:
+      tags:
+      - book-controller
+      summary: Find book by ID
+      operationId: readBook
+      parameters:
+      - name: id
+        in: path
+        description: id of book to be searched
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Found the book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "404":
+          description: Book not found
+    put:
+      tags:
+      - book-controller
+      summary: Update book in database
+      operationId: updateBook
+      parameters:
+      - name: id
+        in: path
+        description: id of book to be searched
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: name
+        in: query
+        description: name of book to be created
+        required: true
+        schema:
+          type: string
+      - name: keyword
+        in: query
+        description: keyword of book to be created
+        required: true
+        schema:
+          type: string
+      - name: authorIds
+        in: query
+        description: authors of book to be created
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Book was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "404":
+          description: Book wasn't updated
+    delete:
+      tags:
+      - book-controller
+      summary: Delete book in database
+      operationId: deleteBook
+      parameters:
+      - name: id
+        in: path
+        description: id of book to be searched
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: Book wasn't deleted
+        "200":
+          description: Book was deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /authors/update:
+    put:
+      tags:
+      - author-controller
+      summary: Update author in database
+      operationId: updateAuthor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "404":
+          description: Author wasn't updated
+        "200":
+          description: Author was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+  /books/create:
+    post:
+      tags:
+      - book-controller
+      summary: Create book in database
+      operationId: createBook
+      parameters:
+      - name: name
+        in: query
+        description: name of book to be created
+        required: true
+        schema:
+          type: string
+      - name: keyword
+        in: query
+        description: keyword of book to be created
+        required: true
+        schema:
+          type: string
+      - name: authorIds
+        in: query
+        description: authors of book to be created
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      responses:
+        "404":
+          description: Book wasn't created
+        "200":
+          description: Book was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /authors/create:
+    post:
+      tags:
+      - author-controller
+      summary: Create author in database
+      operationId: createAuthor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+        required: true
+      responses:
+        "200":
+          description: Author was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        "404":
+          description: Author wasn't created
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Author'
+  /books/searchByName:
+    get:
+      tags:
+      - book-controller
+      summary: Search book by name in database
+      operationId: searchBooksByName
+      parameters:
+      - name: query
+        in: query
+        description: part of the name of book to be searched
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Book was found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "404":
+          description: Book wasn't found
+  /books/searchByAuthor:
+    get:
+      tags:
+      - book-controller
+      summary: Search book by author in database
+      operationId: searchBooksByAuthor
+      parameters:
+      - name: query
+        in: query
+        description: part of the name of author to be searched
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Book was found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        "404":
+          description: Book wasn't found
+  /books/getAllBooks:
+    get:
+      tags:
+      - book-controller
+      summary: Get list of all books
+      operationId: getAllBooks
+      responses:
+        "404":
+          description: Books not found
+        "200":
+          description: Found the books
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /authors/{id}:
+    get:
+      tags:
+      - author-controller
+      summary: Find author by ID
+      operationId: readAuthor
+      parameters:
+      - name: id
+        in: path
+        description: id of author to be searched
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "404":
+          description: Author not found
+        "200":
+          description: Found the author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    delete:
+      tags:
+      - author-controller
+      summary: Delete author in database
+      operationId: deleteAuthor
+      parameters:
+      - name: id
+        in: path
+        description: author to be deleted
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Author was deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        "404":
+          description: Author wasn't deleted
+  /authors/getAllAuthors:
+    get:
+      tags:
+      - author-controller
+      summary: Get list of all authors
+      operationId: getAllAuthors
+      responses:
+        "200":
+          description: Found the authors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        "404":
+          description: Authors not found
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        firstName:
+          type: string
+        middleName:
+          type: string
+        lastName:
+          type: string
+        birthplace:
+          type: string
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        keyword:
+          type: string
+        authors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Author'

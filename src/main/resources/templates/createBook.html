@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Додати книгу</title>
+</head>
+<body>
+<h1>Додати нову книгу</h1>
+
+<form action="" method="post">
+  <label for="bookName">Назва книги:</label>
+  <input type="text" id="bookName" name="bookName" required><br><br>
+
+  <label>Обрати авторів:</label><br>
+  <div th:each="author : ${authors}">
+    <input type="checkbox" th:id="'author' + ${author.id}" th:name="'authorIds'" th:value="${author.id}">
+    <label th:for="'author' + ${author.id}" th:text="${author.fullName}"></label><br>
+  </div>
+
+  <br><br>
+  <button type="submit">Додати книгу</button>
+</form>
+</body>
+</html>
